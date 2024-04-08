@@ -30,7 +30,7 @@ export const signin = async (req, res, next) => {
                 errorHandler(401, 'Wrong credentials!')
             )
         }
-        const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET);
+        const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET, {expiresIn: '10d'});
 
         //it removes the password from sending to frontend
         const { password: pass, ...rest } = validUser._doc;
@@ -72,7 +72,7 @@ export const google = async (req, res, next) => {
                 avatar: req.body.photo
             })
             await newUser.save();
-            const token = jwt.sign({id: newUser._id}, process.env.JWT_SECRET);
+            const token = jwt.sign({id: newUser._id}, process.env.JWT_SECRET, {expiresIn: '10d'});
             const { password: pass, ...rest} = newUser._doc;
             res
             .cookie('access_token', token, {httpOnly: true})
