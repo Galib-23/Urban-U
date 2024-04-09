@@ -13,6 +13,9 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
+  signOutUserStart,
+  signOutUserFailure,
+  signOutUserSuccess,
 } from "../redux/user/userSlice";
 import { app } from "../firebase";
 
@@ -77,6 +80,7 @@ const Profile = () => {
       const data = await res.json();
       if (data.success === false) {
         //console.log(data.message)
+        alert(data.message);
         dispatch(updateUserFailure(data.message));
         return;
       }
@@ -84,6 +88,7 @@ const Profile = () => {
       dispatch(updateUserSuccess(data));
       setUpdateSuccess(true);
     } catch (error) {
+      alert(error.message);
       dispatch(updateUserFailure(error.message));
     }
   };
@@ -91,8 +96,8 @@ const Profile = () => {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`,{
-        method: 'DELETE',
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
       });
       const data = await res.json();
       if (data.success === false) {
@@ -103,7 +108,24 @@ const Profile = () => {
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
     }
-  }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch("/api/auth/signout");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signOutUserFailure(data.message));
+        return;
+      }
+      console.log(data);
+      dispatch(signOutUserSuccess(data));
+    } catch (error) {
+      console.log(error);
+      dispatch(signOutUserFailure(error.message));
+    }
+  };
 
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -173,15 +195,23 @@ const Profile = () => {
         </button>
       </form>
       <div className="flex justify-between items-center mt-5">
-        <span onClick={handleDeleteUser} className="text-red-700 cursor-pointer hover:underline font-semibold hover:text-purple-500">
+        <span
+          onClick={handleDeleteUser}
+          className="text-red-700 cursor-pointer hover:underline font-semibold hover:text-purple-500"
+        >
           Delete Account
         </span>
-        <span className="text-red-700 cursor-pointer font-semibold hover:underline hover:text-purple-500">
+        <span
+          onClick={handleSignOut}
+          className="text-red-700 cursor-pointer font-semibold hover:underline hover:text-purple-500"
+        >
           Sign Out
         </span>
       </div>
       <p className="text-red-600">{error ? error.message : ""}</p>
-      <p className="text-green-600">{updateSuccess ? "User updated successfully" : ""}</p>
+      <p className="text-green-600">
+        {updateSuccess ? "User updated successfully" : ""}
+      </p>
     </div>
   );
 };
