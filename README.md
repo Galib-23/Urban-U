@@ -12,7 +12,7 @@ Welcome to Urban-U, your premier destination for all things real estate. At Urba
 - **Tailwind CSS**: A utility-first CSS framework for building responsive and modern designs.
 - **Node.js**: A JavaScript runtime for server-side development.
 - **Express.js**: A web application framework for Node.js.
-- **MongoDB**: A NoSQL database for storing and retrieving contest data.
+- **MongoDB**: A NoSQL database for storing and retrieving listing and user data.
 - **Mongoose**: A framework for mongoDB database
 - **Cors**: Cross-Origin Resource Sharing middleware to enable secure cross-origin requests.
 - **JWT (JSON Web Tokens)**: Used for secure authentication and authorization.
